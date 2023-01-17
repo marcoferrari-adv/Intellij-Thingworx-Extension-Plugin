@@ -14,7 +14,7 @@
         </constraints>
         <properties>
           <labelFor value="edc16"/>
-          <text value="Name"/>
+          <text resource-bundle="messages/messages" key="name"/>
         </properties>
       </component>
       <component id="464fd" class="javax.swing.JLabel">
@@ -23,7 +23,7 @@
         </constraints>
         <properties>
           <labelFor value="31ed4"/>
-          <text value="Description"/>
+          <text resource-bundle="messages/messages" key="description"/>
         </properties>
       </component>
       <component id="edc16" class="javax.swing.JTextField" binding="name">

@@ -14,7 +14,7 @@
         </constraints>
         <properties>
           <labelFor value="6e000"/>
-          <text value="Name"/>
+          <text resource-bundle="messages/messages" key="name"/>
         </properties>
       </component>
       <component id="c6ae5" class="javax.swing.JLabel">
@@ -23,7 +23,7 @@
         </constraints>
         <properties>
           <labelFor value="5e95a"/>
-          <text value="Description"/>
+          <text resource-bundle="messages/messages" key="description"/>
         </properties>
       </component>
       <component id="5dbde" class="javax.swing.JLabel">
@@ -32,7 +32,7 @@
         </constraints>
         <properties>
           <labelFor value="b2204"/>
-          <text value="Category"/>
+          <text resource-bundle="messages/messages" key="category"/>
           <toolTipText value=""/>
         </properties>
       </component>
@@ -42,7 +42,7 @@
         </constraints>
         <properties>
           <labelFor value="29206"/>
-          <text value="Data Shape"/>
+          <text resource-bundle="messages/messages" key="data.shape"/>
         </properties>
       </component>
       <component id="6e000" class="javax.swing.JTextField" binding="nameField">

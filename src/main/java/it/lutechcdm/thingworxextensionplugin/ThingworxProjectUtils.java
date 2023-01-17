@@ -31,14 +31,16 @@ public class ThingworxProjectUtils {
 
         File twxLibFolder = new File(projectBasePath, ThingworxConstants.TWX_LIB);
         if (twxLibFolder.exists()) {
-            if (twxLibFolder.listFiles((dir, name) -> name != null && name.toLowerCase().matches("^thingworx-ext-sdk-.+\\.jar$")).length > 0)
+            File[] sdkFiles = twxLibFolder.listFiles((dir, name) -> name != null && name.toLowerCase().matches("^thingworx-ext-sdk-.+\\.jar$"));
+            if (sdkFiles != null && sdkFiles.length > 0)
                 return true;
         }
 
         VirtualFile[] moduleContentRoots = ProjectRootManager.getInstance(project).getContentRootsFromAllModules();
         for (VirtualFile moduleContentRoot : moduleContentRoots) {
             twxLibFolder = new File(moduleContentRoot.getPath(), ThingworxConstants.TWX_LIB);
-            if (twxLibFolder.listFiles((dir, name) ->  name != null && name.toLowerCase().matches("^thingworx-ext-sdk-.+\\.jar$")).length > 0)
+            File[] sdkFiles = twxLibFolder.listFiles((dir, name) -> name != null && name.toLowerCase().matches("^thingworx-ext-sdk-.+\\.jar$"));
+            if (sdkFiles != null && sdkFiles.length > 0)
                 return true;
         }
         return false;
@@ -52,11 +54,9 @@ public class ThingworxProjectUtils {
 
         Module[] modules = ModuleManager.getInstance(project).getModules();
         for(Module module : modules) {
-            if(ProjectUtil.guessModuleDir(module) == null)
-                continue;
-
-            if(new File(ProjectUtil.guessModuleDir(module).getPath(), ThingworxConstants.TWX_LIB).exists()) {
-                return ProjectUtil.guessModuleDir(module).getPath();
+            VirtualFile moduleDir = ProjectUtil.guessModuleDir(module);
+            if(moduleDir != null && new File(moduleDir.getPath(), ThingworxConstants.TWX_LIB).exists()) {
+                return moduleDir.getPath();
             }
         }
         return null;

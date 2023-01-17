@@ -77,11 +77,18 @@ public class AddSourcePropertyAction extends ThingworxAnAction {
                             .getElementFactory()
                             .createAnnotationFromText("@A(properties = {" + propertyDefinition + "})", null)
                             .findDeclaredAttributeValue("properties");
+
+            if(newMemberValue == null)
+                return;
+
             propertyDefinitions.setDeclaredAttributeValue("properties", newMemberValue);
             JavaCodeStyleManager.getInstance(project).shortenClassReferences(newMemberValue);
         }
         else {
             PsiAnnotationMemberValue propertiesPsiAnnotationMemberValue = propertyDefinitions.findAttributeValue("properties");
+            if(propertiesPsiAnnotationMemberValue == null)
+                return;
+
             String text = propertiesPsiAnnotationMemberValue.getText();
             if(text.startsWith("{") && text.endsWith("}"))
                 text = text.substring(1, text.length() -1);
@@ -90,6 +97,10 @@ public class AddSourcePropertyAction extends ThingworxAnAction {
                             .getElementFactory()
                             .createAnnotationFromText("@A(properties = {" + text + ",\n" + propertyDefinition + "})", null)
                             .findDeclaredAttributeValue("properties");
+
+            if(newMemberValue == null)
+                return;
+
             JavaCodeStyleManager.getInstance(project).shortenClassReferences(newMemberValue);
             propertyDefinitions.setDeclaredAttributeValue("properties", newMemberValue);
         }

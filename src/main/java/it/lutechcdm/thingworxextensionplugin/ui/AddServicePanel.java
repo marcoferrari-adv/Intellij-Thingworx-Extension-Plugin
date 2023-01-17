@@ -23,7 +23,6 @@ public class AddServicePanel {
     JTable parameterTable;
     private DefaultTableModel parameterTableModel;
     JButton addButton;
-    JButton editButton;
     JButton deleteButton;
     JTabbedPane tabbedPane1;
     JTextField outputNameField;
