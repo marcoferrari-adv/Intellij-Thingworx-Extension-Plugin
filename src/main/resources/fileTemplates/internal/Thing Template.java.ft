@@ -1,0 +1,16 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import com.thingworx.metadata.annotations.ThingworxBaseTemplateDefinition;
+import com.thingworx.things.Thing;
+import com.thingworx.logging.LogUtilities;
+import org.slf4j.Logger;
+
+@ThingworxBaseTemplateDefinition(name = "GenericThing")
+public class ${NAME} extends Thing {
+
+    private static final Logger _logger = LogUtilities.getInstance().getApplicationLogger(${NAME}.class);
+
+    public ${NAME}() {
+
+    }
+}

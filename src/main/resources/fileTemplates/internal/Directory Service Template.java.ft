@@ -1,0 +1,16 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import com.thingworx.logging.LogUtilities;
+import com.thingworx.security.directoryservices.DirectoryService;
+
+import org.slf4j.Logger;
+
+public class ${NAME} extends DirectoryService {
+
+    private static final Logger _logger = LogUtilities.getInstance().getApplicationLogger(${NAME}.class);
+    private static final long serialVersionUID = 1L;
+
+    public ${NAME}() {
+    }
+
+}

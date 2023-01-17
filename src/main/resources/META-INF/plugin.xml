@@ -1,0 +1,127 @@
+<!-- Plugin Configuration File. Read more: https://plugins.jetbrains.com/docs/intellij/plugin-configuration-file.html -->
+<idea-plugin>
+    <!-- Unique identifier of the plugin. It should be FQN. It cannot be changed between the plugin versions. -->
+    <id>it.lutechcdm.ThingworxExtensionPlugin</id>
+
+    <!-- Public plugin name should be written in Title Case.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-name -->
+    <name>Thingworx Extension</name>
+
+    <version>1.2.1</version>
+
+    <!-- A displayed Vendor name or Organization ID displayed on the Plugins Page. -->
+    <vendor email="support@lutechcdm.it" url="https://lutechcdm.it">Lutech CDM</vendor>
+
+    <!-- Description of the plugin displayed on the Plugin Page and IDE Plugin Manager.
+         Simple HTML elements (text formatting, paragraphs, and lists) can be added inside of <![CDATA[ ]]> tag.
+         Guidelines: https://plugins.jetbrains.com/docs/marketplace/plugin-overview-page.html#plugin-description -->
+    <description><![CDATA[Plugin to automatize creation of PTC Thingworx objects, based on PTC eclipse plugin]]></description>
+
+    <change-notes><![CDATA[
+        <h2>New Features 17/01/2023</h2>
+        <ul>
+          <li>Added creation support for Authenticator, Thing Shape, Directory Service and Script Function Libraries</li>
+          <li>Rewrote metadata.xml file handler</li>
+          <li>Added support to HA Configuration</li>
+          <li>Added support to Module folder not in project root</li>
+        </ul>
+        <h2>Bug Fixes</h2>
+        <ul>
+          <li>Added check to avoid creation of unexpected source object on specific Thingworx types (e.g. Authenticator doesn't support source events)</li>
+          <li>General fixes</li>
+        </ul>
+        <h2>Missing features</h2>
+        <ul>
+          <li>Subscription generation for Thing Template/Thing Shape</li>
+          <li>Configuration table generation for Thing Template/Authenticator/Directory Service</li>
+        </ul>
+        ]]>
+    </change-notes>
+
+    <!-- Product and plugin compatibility requirements.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-compatibility.html -->
+    <depends>com.intellij.modules.platform</depends>
+    <depends>com.intellij.java</depends>
+
+    <!-- Extension points defined by the plugin.
+         Read more: https://plugins.jetbrains.com/docs/intellij/plugin-extension-points.html -->
+    <extensions defaultExtensionNs="com.intellij">
+        <moduleBuilder builderClass="it.lutechcdm.thingworxextensionplugin.project.ThingworxModuleBuilder"/>
+
+        <postStartupActivity implementation="it.lutechcdm.thingworxextensionplugin.ThingworxStartupActivity" />
+
+        <internalFileTemplate name="Thing Template"/>
+        <internalFileTemplate name="Directory Service Template"/>
+        <internalFileTemplate name="Script Function Library Template"/>
+        <internalFileTemplate name="Thing Shape Template"/>
+        <internalFileTemplate name="Authenticator Template"/>
+
+    </extensions>
+
+
+    <actions>
+        <action id="ThingWorx.AddThingTemplateAction"
+                class="it.lutechcdm.thingworxextensionplugin.actions.AddThingTemplateAction" text="Add Thing Template">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+
+        <action id="ThingWorx.AddThingShape" class="it.lutechcdm.thingworxextensionplugin.actions.AddThingShapeAction"
+                text="Add Thing Shape"
+                icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_THING_SHAPE_ICON">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+
+        <action id="Thingworx.AddJarResourceAction"
+                class="it.lutechcdm.thingworxextensionplugin.actions.AddJarResourceAction"
+                text="Add Jar Resource"
+                icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_JAR_RESOURCE">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+        <action id="ThingWorx.AddWidgetAction" class="it.lutechcdm.thingworxextensionplugin.actions.AddWidgetAction"
+                text="Add Widget"
+                icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_WIDGET">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+
+        <action id="ThingWorx.AddAuthenticator" class="it.lutechcdm.thingworxextensionplugin.actions.AddAuthenticatorAction"
+                text="Add Authenticator"
+                icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_AUTHENTICATOR_ICON">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+
+        <action id="ThingWorx.AddDirectoryService" class="it.lutechcdm.thingworxextensionplugin.actions.AddDirectoryServiceAction"
+                text="Add Directory Service"
+                icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_DIRECTORY_SERVICE_ICON">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+
+        <action id="ThingWorx.AddScriptFunctionLibrary" class="it.lutechcdm.thingworxextensionplugin.actions.AddScriptFunctionLibraryAction"
+                text="Add Script Function Library"
+                icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_SCRIPT_FUNCTION_LIB_ICON">
+            <add-to-group group-id="NewGroup1" anchor="last"/>
+        </action>
+
+        <group id="Thingworx.source.actions.context.menu.group" text="Thingworx Source" popup="true"
+               icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.TWX_ICON" class="it.lutechcdm.thingworxextensionplugin.groups.ThingworxSourceActionGroup">
+            <action id="Thingworx.AddSourcePropertyAction"
+                    class="it.lutechcdm.thingworxextensionplugin.actions.AddSourcePropertyAction"
+                    text="Add Property"
+                    icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_PROPERTY_ICON" />
+
+            <action id="Thingworx.AddEventAction"
+                    class="it.lutechcdm.thingworxextensionplugin.actions.AddEventAction"
+                    text="Add Event"
+                    icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_EVENT_ICON" />
+
+            <action id="Thingworx.AddService"
+                    class="it.lutechcdm.thingworxextensionplugin.actions.AddServiceAction"
+                    text="Add Service"
+                    icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_SERVICE_ICON" />
+
+            <add-to-group group-id="NewGroup" anchor="last"/>
+            <add-to-group group-id="EditorPopupMenu" anchor="last"/>
+        </group>
+    </actions>
+
+
+</idea-plugin>

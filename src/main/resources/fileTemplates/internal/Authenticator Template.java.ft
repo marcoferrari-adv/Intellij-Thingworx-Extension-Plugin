@@ -1,0 +1,31 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import com.thingworx.logging.LogUtilities;
+import com.thingworx.security.authentication.AuthenticatorException;
+import com.thingworx.security.authentication.CustomAuthenticator;
+import org.slf4j.Logger;
+
+public class ${NAME} extends CustomAuthenticator {
+
+    private static final Logger _logger = LogUtilities.getInstance().getApplicationLogger(${NAME}.class);
+    private static final long serialVersionUID=1L;
+
+    public ${NAME}() {
+    }
+
+    @Override
+    public void authenticate(HttpServletRequest request, HttpServletResponse response) throws AuthenticatorException {
+    }
+
+    @Override
+    public void issueAuthenticationChallenge(HttpServletRequest request, HttpServletResponse response) throws AuthenticatorException {
+    }
+
+    @Override
+    public boolean matchesAuthRequest(HttpServletRequest request) throws AuthenticatorException {
+        return false;
+    }
+}
