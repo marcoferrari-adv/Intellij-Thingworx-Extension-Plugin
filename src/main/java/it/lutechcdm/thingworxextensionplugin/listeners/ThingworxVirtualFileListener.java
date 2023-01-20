@@ -49,8 +49,7 @@ public class ThingworxVirtualFileListener implements BulkFileListener {
 
     private void beforeFileDeletion(@NotNull VirtualFile eventFile) {
         PsiFile psiFile = PsiManager.getInstance(project).findFile(eventFile);
-        if(psiFile instanceof PsiJavaFile) {
-            PsiJavaFile psiJavaFile = (PsiJavaFile) psiFile;
+        if(psiFile instanceof PsiJavaFile psiJavaFile) {
 
             PsiClass psiClass = PsiTreeUtil.findChildOfType(psiJavaFile, PsiClass.class, true);
             if(psiClass == null)

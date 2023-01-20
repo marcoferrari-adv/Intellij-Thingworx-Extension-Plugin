@@ -168,17 +168,10 @@ public class AddServiceDialogWrapper extends DialogWrapper {
             String infoTableType = (String) panel.infoTableType.getSelectedItem();
             if(infoTableType != null) {
                 switch (infoTableType) {
-                    case ThingworxConstants.DATA_TABLE_INFOTABLE:
-                        createdDefinition.addAspect("isDataTableEntry:true");
-                        break;
-                    case ThingworxConstants.STREAM_ENTRY_INFOTABLE:
-                        createdDefinition.addAspect("isStreamEntry:true");
-                        break;
-                    case ThingworxConstants.CONTENT_CRAWLER_INFOTABLE:
-                        createdDefinition.addAspect("isContentCrawlerEntry:true");
-                        break;
-                    default:
-                        createdDefinition.addAspect("isEntityDataShape:true");
+                    case ThingworxConstants.DATA_TABLE_INFOTABLE -> createdDefinition.addAspect("isDataTableEntry:true");
+                    case ThingworxConstants.STREAM_ENTRY_INFOTABLE -> createdDefinition.addAspect("isStreamEntry:true");
+                    case ThingworxConstants.CONTENT_CRAWLER_INFOTABLE -> createdDefinition.addAspect("isContentCrawlerEntry:true");
+                    default -> createdDefinition.addAspect("isEntityDataShape:true");
                 }
             }
         }

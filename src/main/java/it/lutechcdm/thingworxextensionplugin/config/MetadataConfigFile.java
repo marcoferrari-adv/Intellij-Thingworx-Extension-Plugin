@@ -45,7 +45,7 @@ public class MetadataConfigFile {
 
     private static final String FILE_ATTRIBUTE = "file";
 
-    private static final String DESCRIPTION_ATTRIBUTE = "file";
+    private static final String DESCRIPTION_ATTRIBUTE = "description";
 
     private static final String EDITABLE_EXTENSION_ATTRIBUTE = "aspect.isEditableExtensionObject";
 

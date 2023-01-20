@@ -30,9 +30,9 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.PrintWriter;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 import java.util.Properties;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -171,37 +171,19 @@ public class ThingworxModuleBuilder extends ModuleBuilder {
         }
     }
 
-    private void createBuildExtension(Project project, VirtualFile baseDir, ThingworxProjectWizardData wizardData) throws IOException {
-        try(InputStream is = this.getClass().getResourceAsStream("/templates/build-extension.xml")) {
-            if(is == null)
-                throw new IOException("Failed to get build-extension.xml template");
-
-            String content = FileUtils.readStreamToString(is);
-            content = content.replaceFirst("\\{name}", project.getName());
-            content = content.replaceFirst("\\{jar_name}", project.getName().toLowerCase().replaceAll("\\s+", ""));
-            content = content.replaceFirst("\\{package_version}", wizardData.packageVersion);
-            content = content.replaceFirst("\\{project_vendor}", wizardData.vendor);
-            try(FileOutputStream fos = new FileOutputStream(new File(baseDir.getPath(), "build-extension.xml"))) {
-                fos.write(content.getBytes(StandardCharsets.UTF_8));
-            }
+    private void createBuildExtension(Project project, VirtualFile baseDir, ThingworxProjectWizardData ignoredWizardData) throws IOException {
+        String jarName = project.getName().toLowerCase().replaceAll("\\s+", "");
+        String content = MessageFormat.format(ThingworxConstants.BUILD_EXTENSION_TEMPLATE_CONTENT, project.getName(), jarName);
+        try(FileOutputStream fos = new FileOutputStream(new File(baseDir.getPath(), "build-extension.xml"))) {
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
         }
     }
 
     private void createMetadataInfo(Project project, VirtualFile configFilesFolder, ThingworxProjectWizardData wizardData) throws IOException {
-        try(InputStream is = this.getClass().getResourceAsStream("/templates/metadata.xml")) {
-            if(is == null)
-                throw new IOException("Failed to get metadata.xml template");
-
-            String content = FileUtils.readStreamToString(is);
-            content = content.replaceFirst("\\{name}", project.getName());
-            content = content.replaceFirst("\\{minimumThingWorxVersion}", wizardData.minTwxVersion);
-            content = content.replaceFirst("\\{packageVersion}", wizardData.packageVersion);
-            content = content.replaceFirst("\\{vendor}", wizardData.vendor);
-            content = content.replaceFirst("\\{haCompatible}", "" + wizardData.haCompatible);
-
-            try(FileOutputStream fos = new FileOutputStream(new File(configFilesFolder.getPath(), "metadata.xml"))) {
-                fos.write(content.getBytes(StandardCharsets.UTF_8));
-            }
+        String content = MessageFormat.format(ThingworxConstants.METADATA_INFO_TEMPLATE_CONTENT, wizardData.haCompatible, wizardData.minTwxVersion,
+                project.getName(), wizardData.packageVersion, wizardData.vendor);
+        try(FileOutputStream fos = new FileOutputStream(new File(configFilesFolder.getPath(), "metadata.xml"))) {
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
         }
     }
 

@@ -11,14 +11,13 @@ import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
 import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import it.lutechcdm.thingworxextensionplugin.ui.AddWidgetDialogWrapper;
-import it.lutechcdm.thingworxextensionplugin.utils.FileUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.text.MessageFormat;
 
 public class AddWidgetAction extends ThingworxAnAction {
 
@@ -41,10 +40,17 @@ public class AddWidgetAction extends ThingworxAnAction {
                         try {
                             VirtualFile pluginFolder = createWidgetFolderStructure(project, normalizedPluginName);
                             if(pluginFolder != null) {
-                                VirtualFile vf1 = copyTemplateFile(project, normalizedPluginName, "/templates/plugin_name.ide.css", new File(pluginFolder.getPath(), normalizedPluginName + ".ide.css"));
-                                VirtualFile vf2 = copyTemplateFile(project, normalizedPluginName, "/templates/plugin_name.runtime.css", new File(pluginFolder.getPath(), normalizedPluginName + ".runtime.css"));
-                                VirtualFile vf3 = copyTemplateFile(project, normalizedPluginName, "/templates/plugin_name.ide.js", new File(pluginFolder.getPath(), normalizedPluginName + ".ide.js"));
-                                VirtualFile vf4 = copyTemplateFile(project, normalizedPluginName, "/templates/plugin_name.runtime.js", new File(pluginFolder.getPath(), normalizedPluginName + ".runtime.js"));
+                                VirtualFile vf1 = createWidgetFile(project, ThingworxConstants.WIDGET_CSS_TEMPLATE_CONTENT, normalizedPluginName,
+                                        new File(pluginFolder.getPath(), normalizedPluginName + ".ide.css"));
+
+                                VirtualFile vf2 = createWidgetFile(project, ThingworxConstants.WIDGET_CSS_TEMPLATE_CONTENT, normalizedPluginName,
+                                        new File(pluginFolder.getPath(), normalizedPluginName + ".runtime.css"));
+
+                                VirtualFile vf3 = createWidgetFile(project, ThingworxConstants.WIDGET_IDE_JS_TEMPLATE_CONTENT,
+                                        normalizedPluginName, new File(pluginFolder.getPath(), normalizedPluginName + ".ide.js"));
+
+                                VirtualFile vf4 = createWidgetFile(project, ThingworxConstants.WIDGET_RUNTIME_JS_TEMPLATE_CONTENT,
+                                        normalizedPluginName, new File(pluginFolder.getPath(), normalizedPluginName + ".runtime.js"));
 
                                 updateMetadataReference(project, normalizedPluginName, description, vf1, vf2, vf3, vf4);
                             }
@@ -58,20 +64,11 @@ public class AddWidgetAction extends ThingworxAnAction {
         }
     }
 
-    private VirtualFile copyTemplateFile(Project project, String normalizedPluginName, String templateName, File file) throws IOException {
-
-        try(InputStream is = this.getClass().getResourceAsStream(templateName)) {
-            if(is == null)
-                throw new IOException("Failed to get file " + templateName + " template");
-
-            String content = FileUtils.readStreamToString(is);
-            content = content.replaceAll("plugin_name", normalizedPluginName);
-            content = content.replaceAll("project_name", project.getName());
-            try(FileOutputStream fos = new FileOutputStream(file)) {
-                fos.write(content.getBytes(StandardCharsets.UTF_8));
-            }
+    private VirtualFile createWidgetFile(Project project, String contentTemplate, String normalizedPluginName, File file) throws IOException {
+        String content = MessageFormat.format(contentTemplate, normalizedPluginName, project.getName());
+        try(FileOutputStream fos = new FileOutputStream(file)) {
+            fos.write(content.getBytes(StandardCharsets.UTF_8));
         }
-
         LocalFileSystem.getInstance().refresh(false);
         return LocalFileSystem.getInstance().findFileByPath(file.getPath());
     }

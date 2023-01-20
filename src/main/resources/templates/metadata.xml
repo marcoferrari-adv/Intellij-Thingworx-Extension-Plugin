@@ -1,6 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<Entities>
-    <ExtensionPackages>
-        <ExtensionPackage dependsOn="" description="" haCompatible="{haCompatible}" minimumThingWorxVersion="{minimumThingWorxVersion}" name="{name}" packageVersion="{packageVersion}" vendor="{vendor}" />
-    </ExtensionPackages>
-</Entities>

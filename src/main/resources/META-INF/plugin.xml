@@ -18,8 +18,9 @@
     <description><![CDATA[Plugin to automatize creation of PTC Thingworx objects, based on PTC eclipse plugin]]></description>
 
     <change-notes><![CDATA[
-        <h2>New Features 17/01/2023</h2>
+        <h2>New Features 20/01/2023</h2>
         <ul>
+          <li>Updated to java 17, changed creation of template objects using java text blocks</li>
           <li>Added creation support for Authenticator, Thing Shape, Directory Service and Script Function Libraries</li>
           <li>Rewrote metadata.xml file handler</li>
           <li>Added support to HA Configuration</li>

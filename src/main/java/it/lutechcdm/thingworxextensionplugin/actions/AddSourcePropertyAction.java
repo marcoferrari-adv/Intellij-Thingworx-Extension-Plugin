@@ -35,10 +35,9 @@ public class AddSourcePropertyAction extends ThingworxAnAction {
     @Override
     public void actionPerformed(@NotNull AnActionEvent e) {
         PsiFile file = e.getData(CommonDataKeys.PSI_FILE);
-        if(!(file instanceof PsiJavaFile))
+        if(!(file instanceof PsiJavaFile psiJavaFile))
             return;
 
-        PsiJavaFile psiJavaFile = (PsiJavaFile) file;
         Project project = CommonDataKeys.PROJECT.getData(e.getDataContext());
         if(project == null)
             return;
@@ -112,8 +111,7 @@ public class AddSourcePropertyAction extends ThingworxAnAction {
     protected boolean isAvailable(DataContext dataContext, @NotNull AnActionEvent event) {
         Project project = CommonDataKeys.PROJECT.getData(dataContext);
         PsiFile file = event.getData(CommonDataKeys.PSI_FILE);
-        if(file instanceof PsiJavaFile) {
-            PsiJavaFile psiJavaFile = (PsiJavaFile) file;
+        if(file instanceof PsiJavaFile psiJavaFile) {
             ThingworxJavaObject javaObjectType = PSIJavaFileUtils.getThingworxJavaObjectTpe(psiJavaFile);
             return project != null && ThingworxProjectUtils.isThingworxProject(project) && VALID_CLASS_TYPES.contains(javaObjectType);
         }
