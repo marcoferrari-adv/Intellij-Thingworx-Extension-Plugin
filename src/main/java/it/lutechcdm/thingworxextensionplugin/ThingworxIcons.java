@@ -15,4 +15,6 @@ public interface ThingworxIcons {
     Icon ADD_THING_SHAPE_ICON = IconLoader.getIcon("/icons/thingshape.png", ThingworxIcons.class.getClassLoader());
     Icon ADD_DIRECTORY_SERVICE_ICON = IconLoader.getIcon("/icons/directoryservice.png", ThingworxIcons.class.getClassLoader());
     Icon ADD_SCRIPT_FUNCTION_LIB_ICON = IconLoader.getIcon("/icons/webframe.png", ThingworxIcons.class.getClassLoader());
+
+    Icon ADD_CONFIGURATION_TABLE = IconLoader.getIcon("/icons/configuration.png", ThingworxIcons.class.getClassLoader());
 }

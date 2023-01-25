@@ -59,6 +59,21 @@ public class ThingworxFieldValidationHelper {
         }
     }
 
+    public static void validateIntegerValue(String value, boolean required, int lowerBound, JComponent source) throws ThingworxValidationException {
+        if (required && (value == null || value.isBlank())) {
+            throw new ThingworxValidationException("Value is required", source);
+        }
+
+        try {
+            int i = Integer.parseInt(value);
+            if(i < lowerBound)
+                throw new ThingworxValidationException("Value must be greater than " + lowerBound, source);
+        }
+        catch (NumberFormatException nfe) {
+            throw new ThingworxValidationException("Value is not a valid integer format", source);
+        }
+    }
+
     public static void validateRequired(String value, JComponent source) throws ThingworxValidationException {
         if (value == null || value.isBlank()) {
             throw new ThingworxValidationException("Value is required", source);

@@ -119,6 +119,11 @@
                     text="Add Service"
                     icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_SERVICE_ICON" />
 
+            <action id="Thingworx.AddConfigurationTable"
+                    class="it.lutechcdm.thingworxextensionplugin.actions.AddConfigurationTableAction"
+                    text="Add Configuration Table"
+                    icon="it.lutechcdm.thingworxextensionplugin.ThingworxIcons.ADD_CONFIGURATION_TABLE" />
+
             <add-to-group group-id="NewGroup" anchor="last"/>
             <add-to-group group-id="EditorPopupMenu" anchor="last"/>
         </group>
