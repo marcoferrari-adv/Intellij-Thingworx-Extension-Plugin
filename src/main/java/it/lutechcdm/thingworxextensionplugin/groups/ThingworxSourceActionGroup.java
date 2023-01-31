@@ -1,16 +1,22 @@
 package it.lutechcdm.thingworxextensionplugin.groups;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DefaultActionGroup;
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
-import it.lutechcdm.thingworxextensionplugin.PSIJavaFileUtils;
-import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.PSIJavaFileUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
 import org.jetbrains.annotations.NotNull;
 
 public class ThingworxSourceActionGroup extends DefaultActionGroup {
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
+    }
 
     public void update(@NotNull AnActionEvent event) {
         super.update(event);

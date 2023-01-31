@@ -1,7 +1,7 @@
 package it.lutechcdm.thingworxextensionplugin.ui;
 
 import com.intellij.openapi.ui.ComboBox;
-import it.lutechcdm.thingworxextensionplugin.ThingworxBaseTypes;
+import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 
 import javax.swing.*;

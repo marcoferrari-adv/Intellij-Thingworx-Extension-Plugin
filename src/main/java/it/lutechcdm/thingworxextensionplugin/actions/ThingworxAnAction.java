@@ -1,14 +1,20 @@
 package it.lutechcdm.thingworxextensionplugin.actions;
 
+import com.intellij.openapi.actionSystem.ActionUpdateThread;
 import com.intellij.openapi.actionSystem.AnAction;
 import com.intellij.openapi.actionSystem.AnActionEvent;
 import com.intellij.openapi.actionSystem.CommonDataKeys;
 import com.intellij.openapi.actionSystem.DataContext;
 import com.intellij.openapi.project.Project;
-import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
 import org.jetbrains.annotations.NotNull;
 
 public abstract class ThingworxAnAction extends AnAction {
+
+    @Override
+    public @NotNull ActionUpdateThread getActionUpdateThread() {
+        return ActionUpdateThread.EDT;
+    }
 
     @Override
     public void update(@NotNull AnActionEvent event) {

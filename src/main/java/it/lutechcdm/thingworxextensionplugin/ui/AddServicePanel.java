@@ -4,7 +4,7 @@ import com.intellij.openapi.project.Project;
 import com.intellij.openapi.ui.ComboBox;
 import com.intellij.openapi.ui.Messages;
 import com.intellij.ui.table.JBTable;
-import it.lutechcdm.thingworxextensionplugin.ThingworxBaseTypes;
+import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 import it.lutechcdm.thingworxextensionplugin.definitions.ServiceParameter;
 
@@ -47,7 +47,7 @@ public class AddServicePanel {
 
         addButton.addActionListener(e -> {
 
-            AddServiceParameterPanelWrapper dialog = new AddServiceParameterPanelWrapper(project);
+            AddServiceParameterDialogWrapper dialog = new AddServiceParameterDialogWrapper(project);
             dialog.setModal(true);
             dialog.setSize(400, 300);
             if(dialog.showAndGet()) {

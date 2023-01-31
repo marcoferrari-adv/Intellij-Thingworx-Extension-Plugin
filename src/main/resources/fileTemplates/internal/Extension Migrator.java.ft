@@ -1,0 +1,16 @@
+#if (${PACKAGE_NAME} && ${PACKAGE_NAME} != "")package ${PACKAGE_NAME};#end
+
+import com.thingworx.contentmanagement.ImportedEntityCollection;
+import com.thingworx.migration.ExtensionMigratorBase;
+import com.thingworx.logging.LogUtilities;
+import org.slf4j.Logger;
+
+public class ${NAME} extends ExtensionMigratorBase {
+
+    private static final Logger _logger = LogUtilities.getInstance().getApplicationLogger(${NAME}.class);
+
+    @Override
+    public void migrate(ImportedEntityCollection importedEntityCollection) throws Exception {
+        // TODO Auto-generated method stub
+    }
+}

@@ -1,4 +1,4 @@
-package it.lutechcdm.thingworxextensionplugin;
+package it.lutechcdm.thingworxextensionplugin.utils;
 
 import com.intellij.openapi.project.Project;
 import com.intellij.psi.JavaPsiFacade;
@@ -20,6 +20,9 @@ import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.search.GlobalSearchScope;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.util.PsiUtil;
+import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
+import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
+import it.lutechcdm.thingworxextensionplugin.ThingworxJavaObject;
 import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import org.jetbrains.annotations.NotNull;
 

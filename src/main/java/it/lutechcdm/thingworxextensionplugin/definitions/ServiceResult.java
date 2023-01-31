@@ -1,7 +1,5 @@
 package it.lutechcdm.thingworxextensionplugin.definitions;
 
-import it.lutechcdm.thingworxextensionplugin.ThingworxBaseTypes;
-
 import java.util.ArrayList;
 import java.util.List;
 

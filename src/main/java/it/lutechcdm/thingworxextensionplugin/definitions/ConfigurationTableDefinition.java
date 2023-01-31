@@ -18,6 +18,10 @@ public class ConfigurationTableDefinition {
         this.ordinal = ordinal;
     }
 
+    public void addFiledDefinition(ConfigurationTableFieldDefinition fieldDefinition) {
+        fields.add(fieldDefinition);
+    }
+
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
@@ -37,16 +41,16 @@ public class ConfigurationTableDefinition {
         sb.append(ordinal);
         sb.append(", ");
 
-        sb.append("dataShape = @ThingworxDataShapeDefinition(fields ={");
-        for(int i = 0; i < fields.size(); i++) {
-            sb.append("");
+        sb.append("dataShape = @ThingworxDataShapeDefinition(fields={\n");
+        for (int i = 0; i < fields.size(); i++) {
             sb.append(fields.get(i));
-            if(i + 1 == fields.size())
-                sb.append("");
+            if (i + 1 == fields.size())
+                sb.append("\n");
             else
-                sb.append(", ");
+                sb.append(", \n");
         }
         sb.append("})");
+        sb.append(")");
         return sb.toString();
     }
 }

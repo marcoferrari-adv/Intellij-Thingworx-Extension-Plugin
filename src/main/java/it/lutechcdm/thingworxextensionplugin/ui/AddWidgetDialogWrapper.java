@@ -5,7 +5,7 @@ import com.intellij.openapi.ui.ComponentValidator;
 import com.intellij.openapi.ui.DialogWrapper;
 import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.DocumentAdapter;
-import it.lutechcdm.thingworxextensionplugin.ThingworxFieldValidationHelper;
+import it.lutechcdm.thingworxextensionplugin.validation.ThingworxFieldValidationHelper;
 import it.lutechcdm.thingworxextensionplugin.exception.ThingworxValidationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;

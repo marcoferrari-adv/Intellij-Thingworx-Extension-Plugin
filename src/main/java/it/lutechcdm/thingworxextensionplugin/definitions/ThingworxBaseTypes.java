@@ -1,4 +1,4 @@
-package it.lutechcdm.thingworxextensionplugin;
+package it.lutechcdm.thingworxextensionplugin.definitions;
 
 import java.util.Arrays;
 import java.util.Collections;

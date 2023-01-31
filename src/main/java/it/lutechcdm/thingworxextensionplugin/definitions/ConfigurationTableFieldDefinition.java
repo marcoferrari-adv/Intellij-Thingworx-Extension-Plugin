@@ -1,7 +1,5 @@
 package it.lutechcdm.thingworxextensionplugin.definitions;
 
-import it.lutechcdm.thingworxextensionplugin.ThingworxBaseTypes;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,6 +20,18 @@ public class ConfigurationTableFieldDefinition {
 
     public void addAspect(String aspect) {
         aspects.add(aspect);
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public ThingworxBaseTypes getBaseType() {
+        return baseType;
+    }
+
+    public Integer getOrdinal() {
+        return ordinal;
     }
 
     @Override

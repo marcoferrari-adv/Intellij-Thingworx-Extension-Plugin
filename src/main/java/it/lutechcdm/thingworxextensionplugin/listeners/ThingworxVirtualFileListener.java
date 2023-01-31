@@ -13,9 +13,9 @@ import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.util.PsiTreeUtil;
 import com.intellij.psi.xml.XmlTag;
-import it.lutechcdm.thingworxextensionplugin.PSIJavaFileUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.PSIJavaFileUtils;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
-import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
 import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import org.jetbrains.annotations.NotNull;
 
@@ -114,6 +114,8 @@ public class ThingworxVirtualFileListener implements BulkFileListener {
         if(metadata.removeThingShape(className))
             return;
         if(metadata.removeDirectoryService(className))
+            return;
+        if(metadata.removeExtensionManager(className))
             return;
 
         metadata.removeScriptFunctionLibrary(className);

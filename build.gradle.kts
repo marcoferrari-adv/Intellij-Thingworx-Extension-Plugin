@@ -4,7 +4,7 @@ plugins {
 }
 
 group = "it.lutechcdm"
-version = "1.2.2-SNAPSHOT"
+version = "1.3.1-SNAPSHOT"
 
 repositories {
     mavenCentral()

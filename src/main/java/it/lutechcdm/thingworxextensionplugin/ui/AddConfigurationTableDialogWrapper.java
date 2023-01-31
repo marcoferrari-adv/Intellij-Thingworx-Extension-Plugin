@@ -8,30 +8,34 @@ import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.components.BorderLayoutPanel;
-import it.lutechcdm.thingworxextensionplugin.ThingworxFieldValidationHelper;
 import it.lutechcdm.thingworxextensionplugin.definitions.ConfigurationTableDefinition;
+import it.lutechcdm.thingworxextensionplugin.definitions.ConfigurationTableFieldDefinition;
 import it.lutechcdm.thingworxextensionplugin.exception.ThingworxValidationException;
+import it.lutechcdm.thingworxextensionplugin.validation.ThingworxFieldValidationHelper;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
-import javax.swing.event.TableModelEvent;
-import javax.swing.event.TableModelListener;
+import java.util.Comparator;
+import java.util.Set;
 
 public class AddConfigurationTableDialogWrapper extends DialogWrapper {
 
-    final AddConfigurationTablePanel panel = new AddConfigurationTablePanel();
+    final AddConfigurationTablePanel panel;
 
     private ConfigurationTableDefinition createdDefinition = null;
 
     private final Project project;
+    private final Set<String> currentConfigTableNames;
 
-    public AddConfigurationTableDialogWrapper(Project project) {
+    public AddConfigurationTableDialogWrapper(Project project, Set<String> currentConfigTableNames) {
         super(project, false);
+        panel = new AddConfigurationTablePanel(project, currentConfigTableNames.size());
         setTitle("Add Configuration Table");
         init();
         this.project = project;
+        this.currentConfigTableNames = currentConfigTableNames;
     }
 
     @Override
@@ -53,7 +57,6 @@ public class AddConfigurationTableDialogWrapper extends DialogWrapper {
             protected void textChanged(@NotNull DocumentEvent e) {revalidateUI();
             }
         });
-
         p.addToCenter(panel.mainPanel);
         return p;
     }
@@ -66,6 +69,9 @@ public class AddConfigurationTableDialogWrapper extends DialogWrapper {
                     try {
                         JTextField nameField = panel.nameField;
                         ThingworxFieldValidationHelper.validatePropertyName(nameField.getText(), nameField);
+
+                        if(currentConfigTableNames.contains(nameField.getText()))
+                            throw new ThingworxValidationException("Configuration table name " + nameField.getText() + " already used", nameField);
                     }
                     catch (ThingworxValidationException e) {
                         v = new ValidationInfo(e.getMessage(), e.getSource());
@@ -131,7 +137,11 @@ public class AddConfigurationTableDialogWrapper extends DialogWrapper {
             return;
         }
 
-        //createdDefinition = new ConfigurationTableDefinition(panel.nameField.getText(), panel.dataShape.getText(), panel.descriptionField.getText(), panel.categoryField.getText());
+        createdDefinition = new ConfigurationTableDefinition(panel.nameField.getText(), panel.descriptionField.getText(), panel.isMultiRowTable.isSelected(), Integer.parseInt(panel.ordinalField.getText()));
+        panel.configurationTableParameters.sort(Comparator.comparing(ConfigurationTableFieldDefinition::getOrdinal));
+        for(ConfigurationTableFieldDefinition parameter : panel.configurationTableParameters)
+            createdDefinition.addFiledDefinition(parameter);
+
         super.doOKAction();
     }
 

@@ -7,7 +7,7 @@ import com.intellij.openapi.ui.ValidationInfo;
 import com.intellij.ui.DocumentAdapter;
 import com.intellij.util.ui.JBUI;
 import com.intellij.util.ui.components.BorderLayoutPanel;
-import it.lutechcdm.thingworxextensionplugin.ThingworxFieldValidationHelper;
+import it.lutechcdm.thingworxextensionplugin.validation.ThingworxFieldValidationHelper;
 import it.lutechcdm.thingworxextensionplugin.definitions.EventDefinition;
 import it.lutechcdm.thingworxextensionplugin.exception.ThingworxValidationException;
 import org.jetbrains.annotations.NotNull;

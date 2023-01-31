@@ -1,5 +1,6 @@
-package it.lutechcdm.thingworxextensionplugin;
+package it.lutechcdm.thingworxextensionplugin.validation;
 
+import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
 import it.lutechcdm.thingworxextensionplugin.exception.ThingworxValidationException;
 
 import javax.swing.*;

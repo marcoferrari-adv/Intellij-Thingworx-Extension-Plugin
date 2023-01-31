@@ -8,7 +8,7 @@ import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
-import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
 import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import it.lutechcdm.thingworxextensionplugin.ui.AddWidgetDialogWrapper;
 import org.jetbrains.annotations.NotNull;

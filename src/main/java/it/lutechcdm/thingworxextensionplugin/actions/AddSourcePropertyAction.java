@@ -17,12 +17,13 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
-import it.lutechcdm.thingworxextensionplugin.PSIJavaFileUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.PSIJavaFileUtils;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 import it.lutechcdm.thingworxextensionplugin.ThingworxJavaObject;
-import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
 import it.lutechcdm.thingworxextensionplugin.definitions.PropertyDefinition;
 import it.lutechcdm.thingworxextensionplugin.ui.AddPropertyDialogWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -74,7 +75,7 @@ public class AddSourcePropertyAction extends ThingworxAnAction {
             PsiAnnotationMemberValue newMemberValue =
                     JavaPsiFacade.getInstance(project)
                             .getElementFactory()
-                            .createAnnotationFromText("@A(properties = {" + propertyDefinition + "})", null)
+                            .createAnnotationFromText("@A(properties = {\n" + propertyDefinition + "\n})", null)
                             .findDeclaredAttributeValue("properties");
 
             if(newMemberValue == null)
@@ -91,10 +92,11 @@ public class AddSourcePropertyAction extends ThingworxAnAction {
             String text = propertiesPsiAnnotationMemberValue.getText();
             if(text.startsWith("{") && text.endsWith("}"))
                 text = text.substring(1, text.length() -1);
+            text = StringUtils.stripEnd(text, "\r\n");
             PsiAnnotationMemberValue newMemberValue =
                     JavaPsiFacade.getInstance(project)
                             .getElementFactory()
-                            .createAnnotationFromText("@A(properties = {" + text + ",\n" + propertyDefinition + "})", null)
+                            .createAnnotationFromText("@A(properties = {" + text + ",\n" + propertyDefinition + "\n})", null)
                             .findDeclaredAttributeValue("properties");
 
             if(newMemberValue == null)

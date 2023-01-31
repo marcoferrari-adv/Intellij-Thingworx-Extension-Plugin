@@ -10,9 +10,7 @@ import com.intellij.util.ui.components.BorderLayoutPanel;
 import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 import it.lutechcdm.thingworxextensionplugin.validation.ThingworxFieldValidationHelper;
-import it.lutechcdm.thingworxextensionplugin.definitions.ServiceDefinition;
 import it.lutechcdm.thingworxextensionplugin.definitions.ServiceParameter;
-import it.lutechcdm.thingworxextensionplugin.definitions.ServiceResult;
 import it.lutechcdm.thingworxextensionplugin.exception.ThingworxValidationException;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -20,16 +18,15 @@ import org.jetbrains.annotations.Nullable;
 import javax.swing.*;
 import javax.swing.event.DocumentEvent;
 
-public class AddServiceDialogWrapper extends DialogWrapper {
+public class AddServiceParameterDialogWrapper extends DialogWrapper {
 
-    final AddServicePanel panel;
+    final AddServiceParameterPanel panel = new AddServiceParameterPanel();
 
-    ServiceDefinition createdDefinition = null;
+    ServiceParameter createdDefinition = null;
 
-    public AddServiceDialogWrapper(Project project) {
-        super(project, false);
-        panel = new AddServicePanel(project);
-        setTitle("Add Service");
+    public AddServiceParameterDialogWrapper(Project project) {
+        super(project, true);
+        setTitle("Add Service Parameter");
         init();
     }
 
@@ -39,7 +36,7 @@ public class AddServiceDialogWrapper extends DialogWrapper {
 
         addNameValidator();
         addDataShapeValidator();
-        addResultValidator();
+        addNumericFiledValidator();
 
         //add event listener on fields
         panel.nameField.getDocument().addDocumentListener(new DocumentAdapter() {
@@ -56,24 +53,19 @@ public class AddServiceDialogWrapper extends DialogWrapper {
             }
         });
 
-        panel.outputNameField.getDocument().addDocumentListener(new DocumentAdapter() {
-            @Override
-            protected void textChanged(@NotNull DocumentEvent e) {
-                revalidateUI();
-            }
-        });
+        panel.baseType.addItemListener(event -> revalidateUI());
 
         p.addToCenter(panel.mainPanel);
         return p;
     }
 
-    private void addResultValidator() {
+    private void addNumericFiledValidator() {
         new ComponentValidator(getDisposable())
                 .withValidator(() -> {
                     ValidationInfo v = null;
                     try {
-                        if(panel.outputNameField.isVisible()) {
-                            ThingworxFieldValidationHelper.validatePropertyName(panel.outputNameField.getText(), panel.outputNameField);
+                        if(panel.minValue.isVisible()) {
+                            ThingworxFieldValidationHelper.validateNumericValue(panel.minValue.getText(), false, panel.dataShape);
                         }
                     }
                     catch (ThingworxValidationException e) {
@@ -82,7 +74,23 @@ public class AddServiceDialogWrapper extends DialogWrapper {
                     return v;
                 })
                 .andStartOnFocusLost()
-                .installOn(panel.outputNameField);
+                .installOn(panel.minValue);
+
+        new ComponentValidator(getDisposable())
+                .withValidator(() -> {
+                    ValidationInfo v = null;
+                    try {
+                        if(panel.maxValue.isVisible()) {
+                            ThingworxFieldValidationHelper.validateNumericValue(panel.maxValue.getText(), false, panel.dataShape);
+                        }
+                    }
+                    catch (ThingworxValidationException e) {
+                        v = new ValidationInfo(e.getMessage(), e.getSource());
+                    }
+                    return v;
+                })
+                .andStartOnFocusLost()
+                .installOn(panel.maxValue);
     }
 
     private void addDataShapeValidator() {
@@ -125,8 +133,10 @@ public class AddServiceDialogWrapper extends DialogWrapper {
 
     private void revalidateUI() {
         ComponentValidator.getInstance(panel.nameField).ifPresent(ComponentValidator::revalidate);
+        ComponentValidator.getInstance(panel.defaultValue).ifPresent(ComponentValidator::revalidate);
         ComponentValidator.getInstance(panel.dataShape).ifPresent(ComponentValidator::revalidate);
-        ComponentValidator.getInstance(panel.outputNameField).ifPresent(ComponentValidator::revalidate);
+        ComponentValidator.getInstance(panel.minValue).ifPresent(ComponentValidator::revalidate);
+        ComponentValidator.getInstance(panel.maxValue).ifPresent(ComponentValidator::revalidate);
         setOKActionEnabled(true);
     }
 
@@ -141,7 +151,7 @@ public class AddServiceDialogWrapper extends DialogWrapper {
         if (validationInfo != null)
             return validationInfo;
 
-        JComponent[] components = new JComponent[]{panel.nameField, panel.dataShape, panel.outputNameField};
+        JComponent[] components = new JComponent[]{panel.nameField, panel.defaultValue, panel.dataShape, panel.minValue, panel.maxValue};
 
         for (JComponent component : components) {
             if (ComponentValidator.getInstance(component).isPresent()) {
@@ -155,11 +165,16 @@ public class AddServiceDialogWrapper extends DialogWrapper {
 
     @Override
     protected void doOKAction() {
-        createdDefinition = new ServiceDefinition(panel.nameField.getText(), panel.descriptionField.getText(), panel.categoryField.getText(), panel.allowOverride.isSelected());
-        createdDefinition.addAspect("isAsync:" + panel.async.isSelected());
+        ThingworxBaseTypes baseTypes = ThingworxBaseTypes.valueOf((String) panel.baseType.getSelectedItem());
 
-        ThingworxBaseTypes baseTypes = ThingworxBaseTypes.valueOf((String) panel.outputBaseType.getSelectedItem());
-        ServiceResult serviceResult = new ServiceResult(panel.outputNameField.getText(), panel.outputDescriptionField.getText(), baseTypes);
+        createdDefinition = new ServiceParameter(panel.nameField.getText(), panel.descriptionField.getText(), baseTypes);
+
+        if(panel.required.isSelected())
+            createdDefinition.addAspect("isRequired:true");
+
+        if(panel.defaultValue.isVisible())
+            createdDefinition.addAspect("defaultValue:" + panel.defaultValue.getText());
+
         if(baseTypes == ThingworxBaseTypes.INFOTABLE) {
             String dataShape = panel.dataShape.getText();
             if(panel.dataShape.isVisible() && dataShape != null && !dataShape.isEmpty())
@@ -175,14 +190,20 @@ public class AddServiceDialogWrapper extends DialogWrapper {
                 }
             }
         }
-        createdDefinition.setServiceResult(serviceResult);
-        for(ServiceParameter parameter : panel.serviceParameters)
-            createdDefinition.addServiceParameter(parameter);
+        else if(ThingworxBaseTypes.isNumericType(baseTypes)) {
+            String minValue = panel.minValue.getText();
+            if(panel.minValue.isVisible() && minValue != null && !minValue.isEmpty())
+                createdDefinition.addAspect("minimumValue:" + minValue);
+
+            String maxValue = panel.maxValue.getText();
+            if(panel.maxValue.isVisible() && maxValue != null && !maxValue.isEmpty())
+                createdDefinition.addAspect("maximumValue:" + maxValue);
+
+            String units = panel.unit.getText();
+            if(panel.unit.isVisible() && units != null && !units.isEmpty())
+                createdDefinition.addAspect("units:" + minValue);
+        }
 
         super.doOKAction();
-    }
-
-    public ServiceDefinition getCreatedDefinition() {
-        return createdDefinition;
     }
 }

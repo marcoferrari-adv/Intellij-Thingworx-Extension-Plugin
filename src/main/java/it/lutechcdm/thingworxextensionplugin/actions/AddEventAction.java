@@ -17,12 +17,13 @@ import com.intellij.psi.PsiFile;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.codeStyle.JavaCodeStyleManager;
 import com.intellij.psi.util.PsiTreeUtil;
-import it.lutechcdm.thingworxextensionplugin.PSIJavaFileUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.PSIJavaFileUtils;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 import it.lutechcdm.thingworxextensionplugin.ThingworxJavaObject;
-import it.lutechcdm.thingworxextensionplugin.ThingworxProjectUtils;
+import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
 import it.lutechcdm.thingworxextensionplugin.definitions.EventDefinition;
 import it.lutechcdm.thingworxextensionplugin.ui.AddEventDialogWrapper;
+import org.apache.commons.lang3.StringUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.List;
@@ -73,7 +74,7 @@ public class AddEventAction extends ThingworxAnAction {
             PsiAnnotationMemberValue newMemberValue =
                     JavaPsiFacade.getInstance(project)
                             .getElementFactory()
-                            .createAnnotationFromText("@A(events = {" + eventDefinition + "})", null)
+                            .createAnnotationFromText("@A(events = {\n" + eventDefinition + "\n})", null)
                             .findDeclaredAttributeValue("events");
 
             if(newMemberValue == null)
@@ -91,10 +92,11 @@ public class AddEventAction extends ThingworxAnAction {
 
             if(text.startsWith("{") && text.endsWith("}"))
                 text = text.substring(1, text.length() -1);
+            text = StringUtils.stripEnd(text, "\r\n");
             PsiAnnotationMemberValue newMemberValue =
                     JavaPsiFacade.getInstance(project)
                             .getElementFactory()
-                            .createAnnotationFromText("@A(events = {" + text + ",\n" + eventDefinition + "})", null)
+                            .createAnnotationFromText("@A(events = {" + text + ",\n" + eventDefinition + "\n})", null)
                             .findDeclaredAttributeValue("events");
 
             if(newMemberValue == null)

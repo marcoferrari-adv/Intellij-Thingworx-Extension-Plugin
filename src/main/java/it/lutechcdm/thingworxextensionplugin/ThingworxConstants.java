@@ -10,8 +10,13 @@ public class ThingworxConstants {
     public static final String THINGWORX_SERVICE_DEFINITION_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxServiceDefinition";
     public static final String THINGWORX_SERVICE_RESULT_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxServiceResult";
     public static final String THINGWORX_SERVICE_PARAMETER_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxServiceParameter";
+    public static final String THINGWORX_CONFIG_TABLE_DEFINITIONS_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxConfigurationTableDefinitions";
+    public static final String THINGWORX_CONFIG_TABLE_DEFINITION_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxConfigurationTableDefinition";
+    public static final String THINGWORX_DATA_SHAPE_DEFINITION_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxDataShapeDefinition";
+    public static final String THINGWORX_FIELD_DEFINITION_ANNOTATION = "com.thingworx.metadata.annotations.ThingworxFieldDefinition";
 
     public static final String TWX_LIB = "twx-lib";
+    public static final String TWX_SDK = "twx-sdk";
     public static final String BIN_FOLDER = "bin";
     public static final String SRC_FOLDER = "src";
     public static final String LIB_FOLDER = "lib";

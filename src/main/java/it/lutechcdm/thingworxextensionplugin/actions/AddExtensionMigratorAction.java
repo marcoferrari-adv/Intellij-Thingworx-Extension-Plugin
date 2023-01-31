@@ -7,6 +7,7 @@ import com.intellij.openapi.application.ApplicationManager;
 import com.intellij.openapi.command.WriteCommandAction;
 import com.intellij.openapi.project.DumbAware;
 import com.intellij.openapi.project.Project;
+import com.intellij.openapi.ui.Messages;
 import com.intellij.openapi.util.NlsContexts;
 import com.intellij.psi.JavaDirectoryService;
 import com.intellij.psi.PsiClass;
@@ -15,9 +16,9 @@ import com.intellij.psi.PsiElement;
 import com.intellij.psi.PsiJavaFile;
 import com.intellij.psi.PsiRecordHeader;
 import com.intellij.util.IncorrectOperationException;
+import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import it.lutechcdm.thingworxextensionplugin.ui.ThingworxIcons;
 import it.lutechcdm.thingworxextensionplugin.utils.ThingworxProjectUtils;
-import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -25,21 +26,21 @@ import org.jetbrains.annotations.Nullable;
 import java.util.Map;
 
 @SuppressWarnings("UnstableApiUsage")
-public class AddThingShapeAction extends JavaCreateTemplateInPackageAction<PsiClass> implements DumbAware, CreateThingworxJavaTemplateAction {
+public class AddExtensionMigratorAction extends JavaCreateTemplateInPackageAction<PsiClass> implements DumbAware, CreateThingworxJavaTemplateAction {
 
-    public AddThingShapeAction() {
-        super("New Thing Shape", "New Thing Shape", ThingworxIcons.ADD_THING_SHAPE_ICON, true);
+    public AddExtensionMigratorAction() {
+        super("New Extension Migrator", "New Extension Migrator", ThingworxIcons.ADD_EXTENSION_MIGRATOR_ICON, true);
     }
 
     @Override
     protected void buildDialog(@NotNull Project project, @NotNull PsiDirectory directory, CreateFileFromTemplateDialog.@NotNull Builder builder) {
-        builder.setTitle("New Thing Shape")
-                .addKind("Thing shape", ThingworxIcons.ADD_THING_SHAPE_ICON, "Thing Shape Template");
+        builder.setTitle("New Extension Migrator")
+                .addKind("Extension migrator", ThingworxIcons.ADD_EXTENSION_MIGRATOR_ICON, "Extension Migrator");
     }
 
     @Override
     protected @NlsContexts.Command String getActionName(PsiDirectory directory, @NonNls @NotNull String newName, @NonNls String templateName) {
-        return "Create Thing Shape " + newName;
+        return "Create Extension Migrator " + newName;
     }
 
     @Override
@@ -83,6 +84,15 @@ public class AddThingShapeAction extends JavaCreateTemplateInPackageAction<PsiCl
     public void addThingMetadataReference(Project project, PsiJavaFile psiJavaFile, PsiClass psiClass) {
         MetadataConfigFile metadata = new MetadataConfigFile(ThingworxProjectUtils.getMetadataFile(project));
         String className = psiJavaFile.getPackageName().isEmpty() ? psiClass.getName() : psiJavaFile.getPackageName() + "." + psiClass.getName();
-        metadata.addThingShape(className);
+
+        if(metadata.existsExtensionMigrator()) {
+            //ask confirm if already defined
+            int selectedOption = Messages.showDialog("An extension migrator is already defined, creating a new one will override the existing one", "Override Extension Migrator",
+                    new String[]{Messages.getOkButton(), Messages.getCancelButton()}, 0, 0, Messages.getWarningIcon(), null);
+            if (selectedOption == 0)
+                metadata.addExtensionMigrator(className);
+        }
+        else
+            metadata.addExtensionMigrator(className);
     }
 }

@@ -1,6 +1,7 @@
 package it.lutechcdm.thingworxextensionplugin.config;
 
 import com.intellij.openapi.vfs.VirtualFile;
+import com.intellij.psi.xml.XmlAttribute;
 import com.intellij.psi.xml.XmlDocument;
 import com.intellij.psi.xml.XmlFile;
 import com.intellij.psi.xml.XmlTag;
@@ -152,7 +153,7 @@ public class MetadataConfigFile {
 
         XmlTag thingPackage = thingPackages.createChildTag(THING_PACKAGE_NODE_NAME, null, null, false);
 
-        String name =  className.contains(".") ? className.substring(className.lastIndexOf(".") + 1) : className;
+        String name = className.contains(".") ? className.substring(className.lastIndexOf(".") + 1) : className;
         thingPackage.setAttribute(CLASSNAME_ATTRIBUTE, className);
         thingPackage.setAttribute(DESCRIPTION_ATTRIBUTE, "");
         thingPackage.setAttribute(NAME_ATTRIBUTE, name + "Package");
@@ -177,6 +178,49 @@ public class MetadataConfigFile {
     public void addAuthenticator(String className) {
         Map<String, String> attributes = Map.of("enabled", "false", "priority", "1", "requiresChallenge", "false", "supportsSession", "false");
         createThingworxParentedNode(AUTHENTICATORS_NODE_NAME, AUTHENTICATOR_NODE_NAME, className, true, attributes);
+    }
+
+    public void addExtensionMigrator(String className) {
+        XmlTag extensionPackages = rootTag.findFirstSubTag("ExtensionPackages");
+        if(extensionPackages == null)
+            throw new InvalidMetadataFormatException("Metadata file doesn't contains ExtensionPackages node, check the file format");
+
+        XmlTag extensionPackage = extensionPackages.findFirstSubTag("ExtensionPackage");
+        if(extensionPackage == null)
+            throw new InvalidMetadataFormatException("Metadata file doesn't contains ExtensionPackage node, check the file format");
+
+        extensionPackage.setAttribute("migratorClass", className);
+    }
+
+    public boolean removeExtensionManager(String className) {
+        XmlTag extensionPackages = rootTag.findFirstSubTag("ExtensionPackages");
+        if(extensionPackages == null)
+            throw new InvalidMetadataFormatException("Metadata file doesn't contains ExtensionPackages node, check the file format");
+
+        XmlTag extensionPackage = extensionPackages.findFirstSubTag("ExtensionPackage");
+        if(extensionPackage == null)
+            throw new InvalidMetadataFormatException("Metadata file doesn't contains ExtensionPackage node, check the file format");
+
+        String migratorClass = extensionPackage.getAttributeValue("migratorClass");
+        XmlAttribute migratorClassAttribute = extensionPackage.getAttribute("migratorClass");
+        if(migratorClass != null && migratorClass.equals(className) && migratorClassAttribute != null) {
+            migratorClassAttribute.delete();
+            return true;
+        }
+        return false;
+    }
+
+    public boolean existsExtensionMigrator() {
+        XmlTag extensionPackages = rootTag.findFirstSubTag("ExtensionPackages");
+        if(extensionPackages == null)
+            throw new InvalidMetadataFormatException("Metadata file doesn't contains ExtensionPackages node, check the file format");
+
+        XmlTag extensionPackage = extensionPackages.findFirstSubTag("ExtensionPackage");
+        if(extensionPackage == null)
+            throw new InvalidMetadataFormatException("Metadata file doesn't contains ExtensionPackage node, check the file format");
+
+        String className = extensionPackage.getAttributeValue("migratorClass");
+        return className != null && !className.isEmpty();
     }
 
     public boolean removeAuthenticator(String className) {

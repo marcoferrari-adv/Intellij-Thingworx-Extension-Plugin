@@ -1,4 +1,4 @@
-package it.lutechcdm.thingworxextensionplugin;
+package it.lutechcdm.thingworxextensionplugin.utils;
 
 import com.intellij.openapi.module.Module;
 import com.intellij.openapi.module.ModuleManager;
@@ -16,6 +16,7 @@ import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import com.intellij.psi.PsiManager;
 import com.intellij.psi.xml.XmlFile;
+import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
 import it.lutechcdm.thingworxextensionplugin.config.MetadataConfigFile;
 import org.jetbrains.annotations.Nullable;
 

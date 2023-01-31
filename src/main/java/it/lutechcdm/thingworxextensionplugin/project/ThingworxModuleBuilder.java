@@ -19,7 +19,7 @@ import com.intellij.openapi.util.Disposer;
 import com.intellij.openapi.vfs.LocalFileSystem;
 import com.intellij.openapi.vfs.VirtualFile;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
-import it.lutechcdm.thingworxextensionplugin.ThingworxIcons;
+import it.lutechcdm.thingworxextensionplugin.ui.ThingworxIcons;
 import it.lutechcdm.thingworxextensionplugin.utils.FileUtils;
 import org.jetbrains.annotations.NonNls;
 import org.jetbrains.annotations.NotNull;
@@ -209,7 +209,7 @@ public class ThingworxModuleBuilder extends ModuleBuilder {
             }
         }
 
-        final Library twxSdkLibrary = modifiableRootModel.getModuleLibraryTable().createLibrary("twx-sdk");
+        final Library twxSdkLibrary = modifiableRootModel.getModuleLibraryTable().createLibrary(ThingworxConstants.TWX_SDK);
         twxLibFolder = LocalFileSystem.getInstance().refreshAndFindFileByPath(twxLibFolder.getPath());
         if (twxLibFolder != null) {
             final Library.ModifiableModel libModel = twxSdkLibrary.getModifiableModel();

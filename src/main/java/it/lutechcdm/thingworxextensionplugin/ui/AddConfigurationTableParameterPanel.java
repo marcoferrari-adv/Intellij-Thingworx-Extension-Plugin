@@ -1,48 +1,54 @@
 package it.lutechcdm.thingworxextensionplugin.ui;
 
 import com.intellij.openapi.ui.ComboBox;
-import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
 import it.lutechcdm.thingworxextensionplugin.ThingworxConstants;
+import it.lutechcdm.thingworxextensionplugin.definitions.ThingworxBaseTypes;
 
 import javax.swing.*;
 
-public class AddPropertyPanel {
-
+public class AddConfigurationTableParameterPanel {
     JPanel mainPanel;
     JTextField nameField;
-    JTextField categoryField;
-    JComboBox<String> baseTypeField;
     JTextField descriptionField;
-    JCheckBox persistent;
-    JCheckBox readonly;
-    JCheckBox logged;
-    JTextField defaultValue;
+    JTextField ordinalField;
+    JComboBox<String> baseTypeField;
+    JTabbedPane tabbedPane1;
+    JTextField friendlyName;
+    JTextField selectedOption;
+    JCheckBox required;
     JCheckBox isDefault;
-    JLabel defaultValueLabel;
-    JLabel unitLabel;
-    JLabel minValueLabel;
-    JLabel maxValueLabel;
-    JTextField dataShape;
+    JTextField defaultValue;
     JTextField unit;
     JTextField minValue;
     JTextField maxValue;
-    JComboBox<String> dataChangeType;
-    JLabel dataShapeLabel;
-    JLabel infotableTypeLabel;
-    JComboBox<String> infotableType;
+    JComboBox<String> infoTableType;
+    JTextField dataShape;
+    private JLabel defaultValueLabel;
+    private JLabel infoTableTypeLabel;
+    private JLabel dataShapeLabel;
+    private JLabel minValueLabel;
+    private JLabel maxValueLabel;
+    private JLabel unitLabel;
+    JCheckBox isPrimaryKey;
 
-    public AddPropertyPanel() {
+    private final int startOrdinal;
+    private final boolean isPrimaryKeyVisible;
+
+    public AddConfigurationTableParameterPanel(int startOrdinal, boolean isPrimaryKeyVisible) {
+
+        this.startOrdinal = startOrdinal;
+        this.isPrimaryKeyVisible = isPrimaryKeyVisible;
 
         isDefault.addItemListener(e -> {
 
             String selectedItem = (String) baseTypeField.getSelectedItem();
             ThingworxBaseTypes selectedTwxType = ThingworxBaseTypes.valueOf(selectedItem);
-            if(ThingworxBaseTypes.isNumericType(selectedTwxType)) {
+            if (ThingworxBaseTypes.isNumericType(selectedTwxType)) {
                 setNumericFiledVisible(true);
                 setInfoTableFieldVisible(false);
                 setDefaultFiledVisible(isDefault.isSelected());
             }
-            else if(ThingworxBaseTypes.INFOTABLE == selectedTwxType) {
+            else if (ThingworxBaseTypes.INFOTABLE == selectedTwxType) {
                 setInfoTableFieldVisible(true);
                 setNumericFiledVisible(false);
                 setDefaultFiledVisible(false);
@@ -58,14 +64,14 @@ public class AddPropertyPanel {
 
             String selectedItem = (String) baseTypeField.getSelectedItem();
             ThingworxBaseTypes selectedTwxType = ThingworxBaseTypes.valueOf(selectedItem);
-            if(ThingworxBaseTypes.INFOTABLE == selectedTwxType) {
+            if (ThingworxBaseTypes.INFOTABLE == selectedTwxType) {
                 setDefaultFiledVisible(false);
                 setNumericFiledVisible(false);
                 setInfoTableFieldVisible(true);
                 isDefault.setVisible(false);
                 isDefault.setSelected(false);
             }
-            else if(ThingworxBaseTypes.isNumericType(selectedTwxType)) {
+            else if (ThingworxBaseTypes.isNumericType(selectedTwxType)) {
                 isDefault.setSelected(false);
                 isDefault.setVisible(true);
                 setNumericFiledVisible(true);
@@ -99,9 +105,9 @@ public class AddPropertyPanel {
         dataShapeLabel.setVisible(visible);
         dataShape.setVisible(visible);
         dataShape.setText("");
-        infotableTypeLabel.setVisible(visible);
-        infotableType.setVisible(visible);
-        infotableType.setSelectedItem(ThingworxConstants.JUST_INFOTABLE);
+        infoTableTypeLabel.setVisible(visible);
+        infoTableType.setVisible(visible);
+        infoTableType.setSelectedItem(ThingworxConstants.JUST_INFOTABLE);
     }
 
     private void setDefaultFiledVisible(boolean visible) {
@@ -111,13 +117,16 @@ public class AddPropertyPanel {
     }
 
     private void createUIComponents() {
-        dataChangeType = new ComboBox<>(new String[]{"ALWAYS", "NEVER", "ON", "OFF", "VALUE", "DEADBAND"});
-        dataChangeType.setSelectedItem("VALUE");
-
         baseTypeField = new ComboBox<>(ThingworxBaseTypes.getPropertyDefinitionBaseTypeList());
         baseTypeField.setSelectedItem(ThingworxBaseTypes.STRING.name());
 
-        infotableType = new ComboBox<>(new String[]{ThingworxConstants.JUST_INFOTABLE, ThingworxConstants.DATA_TABLE_INFOTABLE, ThingworxConstants.STREAM_ENTRY_INFOTABLE, ThingworxConstants.CONTENT_CRAWLER_INFOTABLE});
-        infotableType.setSelectedItem(ThingworxConstants.JUST_INFOTABLE);
+        infoTableType = new ComboBox<>(new String[]{ThingworxConstants.JUST_INFOTABLE, ThingworxConstants.DATA_TABLE_INFOTABLE, ThingworxConstants.STREAM_ENTRY_INFOTABLE, ThingworxConstants.CONTENT_CRAWLER_INFOTABLE});
+        infoTableType.setSelectedItem(ThingworxConstants.JUST_INFOTABLE);
+
+        ordinalField = new JTextField();
+        ordinalField.setText("" + startOrdinal);
+
+        isPrimaryKey = new JCheckBox();
+        isPrimaryKey.setVisible(isPrimaryKeyVisible);
     }
 }
