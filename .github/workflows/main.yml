@@ -25,20 +25,26 @@ jobs:
           sudo rm -rf /usr/share/dotnet
           sudo rm -rf /usr/local/lib/android
           sudo rm -rf /opt/ghc
-      # Check out current repository
-      - name: Fetch Sources
-        uses: actions/checkout@v3
-
-      # Validate wrapper
-      - name: Gradle Wrapper Validation
-        uses: gradle/wrapper-validation-action@v1.0.6
-
+          
       # Setup Java 11 environment for the next steps
       - name: Setup Java
         uses: actions/setup-java@v3
         with:
           distribution: corretto
           java-version: 17
+          
+      # Check out current repository
+      - name: Fetch Sources
+        uses: actions/checkout@v3
+        
+      - name: Setup Gradle
+        uses: gradle/gradle-build-action@v2
+        with:
+            gradle-version: 7.5
+
+      # Validate wrapper
+      - name: Gradle Wrapper Validation
+        uses: gradle/wrapper-validation-action@v1.0.6
 
       # Set environment variables
       - name: Export Properties
