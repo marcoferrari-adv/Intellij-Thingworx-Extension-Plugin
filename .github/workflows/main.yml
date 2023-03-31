@@ -52,6 +52,8 @@ jobs:
         run: |
           PROPERTIES="$(./gradlew properties --console=plain -q)"
           echo $PROPERTIES
+          VERSION="$(echo "$PROPERTIES" | grep "^version:" | cut -f2- -d ' ')"
+          echo $VERSION
           
       # Run Verify Plugin task and IntelliJ Plugin Verifier tool
       - name: Run Plugin Build tasks
