@@ -15,7 +15,7 @@ public class ThingworxSourceActionGroup extends DefaultActionGroup {
 
     @Override
     public @NotNull ActionUpdateThread getActionUpdateThread() {
-        return ActionUpdateThread.EDT;
+        return ActionUpdateThread.BGT;
     }
 
     public void update(@NotNull AnActionEvent event) {
